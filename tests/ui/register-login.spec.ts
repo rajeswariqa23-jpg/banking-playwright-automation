@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'crypto';
-import { RegistrationPage } from '../../pages/RegistrationPage';
-import { LoginPage } from '../../pages/LoginPage';
+import { RegistrationPage } from '../../pages/Registrationpage';
+import { LoginPage } from '../../pages/Loginpage';
 import { AccountsPage } from '../../pages/AccountsPage';
 import { TransferPage } from '../../pages/TransferPage';
 import { TransactionsPage } from '../../pages/TransactionsPage';

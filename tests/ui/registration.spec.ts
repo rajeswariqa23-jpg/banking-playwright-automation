@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { RegistrationPage } from '../../pages/RegistrationPage';
+import { RegistrationPage } from '../../pages/Registrationpage';
 import { randomUUID } from 'crypto';
 import { testUser } from '../../test-data/userData';
 
