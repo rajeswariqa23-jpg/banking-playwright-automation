@@ -2,6 +2,6 @@
 Feature: Customer Login
 
   Scenario: Registered customer logs in successfully
-    Given a registered customer exists
-    When the customer logs in with valid credentials
+    Given the customer is on the ParaBank login page
+    When the customer enters valid username and password
     Then the Accounts Overview page should be displayed

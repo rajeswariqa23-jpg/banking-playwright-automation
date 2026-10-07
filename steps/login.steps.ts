@@ -1,8 +1,8 @@
 import { createBdd } from 'playwright-bdd';
 import { expect } from '@playwright/test';
 import { randomUUID } from 'crypto';
-import { LoginPage } from '../pages/LoginPage';
-import { RegistrationPage } from '../pages/RegistrationPage';
+import { LoginPage } from '../pages/Loginpage';
+import { RegistrationPage } from '../pages/Registrationpage';
 
 const { Given, When, Then } = createBdd();
 
