@@ -8,7 +8,7 @@ const bddTestDir = defineBddConfig({
 });
 
 export default defineConfig({
-  testDir: '.',
+  testDir: bddTestDir,
 
   testMatch: [
     'tests/**/*.spec.ts',
