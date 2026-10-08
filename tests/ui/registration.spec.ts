@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { RegistrationPage } from '../../pages/Registrationpage';
-import { randomUUID } from 'crypto';
-import { testUser } from '../../test-data/userData';
+import { TestDataFactory } from '../../utils/TestDataFactory';
 
 test.describe('Registration Tests', () => {
 
@@ -9,16 +8,15 @@ test.describe('Registration Tests', () => {
 
     const registrationPage = new RegistrationPage(page);
 
-    const username =
-      `user${randomUUID().replace(/-/g, '').slice(0, 15)}`;
+    const username = TestDataFactory.generateUsername();
+    const customer = TestDataFactory.getCustomerData();
 
     await registrationPage.navigate();
 
     await registrationPage.registerUser(
-      testUser.firstName,
-      testUser.lastName,
+      customer,
       username,
-      testUser.password
+      customer.password
     );
 
     await expect(

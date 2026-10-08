@@ -1,3 +1,5 @@
 export const testConfig = {
-  baseUrl: 'http://localhost:8080/parabank/'
+  baseUrl:
+    process.env.BASE_URL ||
+    'http://localhost:8080/parabank/'
 };

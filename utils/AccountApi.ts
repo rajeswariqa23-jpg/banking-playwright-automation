@@ -1,8 +1,8 @@
 import { APIRequestContext, expect } from '@playwright/test';
+import { XMLParser } from 'fast-xml-parser';
 import { testConfig } from '../config/testConfig';
 
 export class AccountApi {
-
   readonly request: APIRequestContext;
 
   constructor(request: APIRequestContext) {
@@ -10,15 +10,17 @@ export class AccountApi {
   }
 
   async getAccount(accountId: string) {
-
-   const response = await this.request.get(
-  `${testConfig.baseUrl}services/bank/accounts/${accountId}`
-);
+    const response = await this.request.get(
+      `${testConfig.baseUrl}services/bank/accounts/${accountId}`
+    );
 
     expect(response.status()).toBe(200);
 
-    const responseBody = await response.text();
+    const responseText = await response.text();
 
-    return responseBody;
+    const parser = new XMLParser();
+    const parsedResponse = parser.parse(responseText);
+
+    return parsedResponse.account;
   }
 }

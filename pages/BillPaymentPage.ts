@@ -42,25 +42,34 @@ export class BillPaymentPage {
   }
 
   async payBill(
-    amount: string,
-    fromAccount: string
-  ) {
-    await this.billPayLink.click();
+  billData: {
+    payeeName: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    phone: string;
+    accountNumber: string;
+    amount: string;
+  },
+  fromAccount: string
+) {
+  await this.billPayLink.click();
 
-    await this.payeeName.fill('Electric Company');
-    await this.address.fill('100 Utility Drive');
-    await this.city.fill('Atlanta');
-    await this.state.fill('GA');
-    await this.zipCode.fill('30004');
-    await this.phone.fill('4705552222');
+  await this.payeeName.fill(billData.payeeName);
+  await this.address.fill(billData.address);
+  await this.city.fill(billData.city);
+  await this.state.fill(billData.state);
+  await this.zipCode.fill(billData.zipCode);
+  await this.phone.fill(billData.phone);
 
-    await this.account.fill('987654321');
-    await this.verifyAccount.fill('987654321');
+  await this.account.fill(billData.accountNumber);
+  await this.verifyAccount.fill(billData.accountNumber);
 
-    await this.amount.fill(amount);
+  await this.amount.fill(billData.amount);
 
-    await this.fromAccountDropdown.selectOption(fromAccount);
+  await this.fromAccountDropdown.selectOption(fromAccount);
 
-    await this.sendPaymentButton.click();
-  }
+  await this.sendPaymentButton.click();
+}
 }

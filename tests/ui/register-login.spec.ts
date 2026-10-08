@@ -1,35 +1,31 @@
-import { test, expect } from '@playwright/test';
-import { randomUUID } from 'crypto';
-import { RegistrationPage } from '../../pages/Registrationpage';
-import { LoginPage } from '../../pages/Loginpage';
-import { AccountsPage } from '../../pages/AccountsPage';
-import { TransferPage } from '../../pages/TransferPage';
-import { TransactionsPage } from '../../pages/TransactionsPage';
-import { BillPaymentPage } from '../../pages/BillPaymentPage';
+import { test, expect } from '../../fixtures/pages.fixtures';
 import { AccountApi } from '../../utils/AccountApi';
+import { TestDataFactory } from '../../utils/TestDataFactory';
+const billData = TestDataFactory.getBillPaymentData();
 
-test('Register user, open account and transfer funds successfully', async ({ page, request }) => {
-  const registrationPage = new RegistrationPage(page);
-  const loginPage = new LoginPage(page);
-  const accountsPage = new AccountsPage(page);
-  const transferPage = new TransferPage(page);
-  const transactionsPage = new TransactionsPage(page);
-  const billPaymentPage = new BillPaymentPage(page);
-  const accountApi = new AccountApi(request);
+test(
+  'Register user, open account and transfer funds successfully',
+  async ({
+    page,
+    request,
+    registrationPage,
+    loginPage,
+    accountsPage,
+    transferPage,
+    transactionsPage,
+    billPaymentPage
+  }) => {
+      const accountApi = new AccountApi(request);
 
-  const username =
-    `user${randomUUID().replace(/-/g, '').slice(0, 15)}`;
-
-  const password = 'Test@123';
-
+  const username = TestDataFactory.generateUsername();
+   const customer = TestDataFactory.getCustomerData();
   // Register new user
   await registrationPage.navigate();
 
   await registrationPage.registerUser(
-    'Rajeswari',
-    'B',
+    customer,
     username,
-    password
+    customer.password
   );
 
   await expect(
@@ -40,7 +36,7 @@ test('Register user, open account and transfer funds successfully', async ({ pag
   await registrationPage.logout();
 
   // Login again
-  await loginPage.login(username, password);
+  await loginPage.login(username, customer.password);
 
   // Verify successful login
   await expect(
@@ -64,12 +60,17 @@ test('Register user, open account and transfer funds successfully', async ({ pag
 
   console.log(`New Account ID: ${newAccountId}`);
 
-  const accountResponse = await accountApi.getAccount(newAccountId);
+ const accountResponse = await accountApi.getAccount(newAccountId);
 
 console.log('Account API Response:', accountResponse);
 
-expect(accountResponse).toContain(`<id>${newAccountId}</id>`);
+expect(accountResponse.id.toString()).toBe(newAccountId);
 
+expect(accountResponse.customerId).toBeDefined();
+
+expect(accountResponse.type).toBe('SAVINGS');
+
+expect(accountResponse.balance).toBeDefined();
   // Open Transfer Funds
   await transferPage.transferFundsLink.click();
 
@@ -113,7 +114,7 @@ await expect(
 
 // Pay a bill using the new account
 await billPaymentPage.payBill(
-  '50',
+  billData,
   newAccountId
 );
 

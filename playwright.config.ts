@@ -2,13 +2,18 @@ import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 import { testConfig } from './config/testConfig';
 
-const testDir = defineBddConfig({
+const bddTestDir = defineBddConfig({
   features: 'features/**/*.feature',
   steps: 'steps/**/*.ts',
 });
 
 export default defineConfig({
-  testDir,
+  testDir: '.',
+
+  testMatch: [
+    'tests/**/*.spec.ts',
+    '.features-gen/**/*.spec.js'
+  ],
 
   use: {
     baseURL: testConfig.baseUrl,
